@@ -1,95 +1,116 @@
 ﻿using Trabajo_escuela_practica;
-List<Escuela> escuelass = new List<Escuela>();
-List<Curso> cursitos = new List<Curso>();
-void CargarEscuela()
-{
+List<Hospital> hospitales = new List<Hospital>();    
+List<Doctor> doctores = new List<Doctor>();
 
+void CargarHospital()
+{
     do
     {
-        Escuela escuela = new Escuela();
-        Console.WriteLine("Ingrese el nombre de la escuela");
-        escuela.Nombre = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(escuela.Nombre))
-        {
+        Hospital hospital = new Hospital();
+
+        // Ingreso del nombre del hospital
+        Console.WriteLine("Ingrese el nombre del hospital:");
+        hospital.Nombre = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(hospital.Nombre))
             break;
-        }
 
-        Console.WriteLine("Ingrese el nombre de la ciudad");
-        escuela.Ciudad = Console.ReadLine();
-
-
-
-        escuela.Cursos = new List<Curso>();
+        // Ingreso de ciudad con validación
+        string ciudadInput;
         do
         {
-            Curso curso = new Curso();
-            Console.WriteLine("Ingrese el nombre del curso:");
-            curso.Nombre = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(curso.Nombre))
+            Console.WriteLine("Ingrese la ciudad:");
+            ciudadInput = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(ciudadInput))
             {
-                break;
+                Console.WriteLine("La ciudad no puede estar vacía. Intente de nuevo.");
             }
+        } while (string.IsNullOrWhiteSpace(ciudadInput));
+        hospital.Ciudad = ciudadInput;
 
+        hospital.Doc = new List<Doctor>();
 
-            Profesor profesor = new Profesor();
-            Console.WriteLine("Ingrese el nombre del profesor:");
-            profesor.Nombre = Console.ReadLine();
-            Console.WriteLine("Ingrese el apellido del profesor:");
-            profesor.Apellido = Console.ReadLine();
-            Console.WriteLine("Ingrese el sueldo del profesor:");
-            profesor.Sueldo = int.Parse(Console.ReadLine());
-            Console.WriteLine("Ingrese el título del profesor:");
-            profesor.Titulo = Console.ReadLine();
-            curso.AsigarProfesor(profesor);
+        // Carga de doctores
+        while (true)
+        {
+            Doctor doctor = new Doctor();
 
+            Console.WriteLine("Ingrese el nombre del doctor:");
+            doctor.Nombre = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(doctor.Nombre))
+                break;
 
-            curso.Alumnoss = new List<Alumnos>();
-
-
+            string especialidadInput;
             do
             {
-                Alumnos alumno = new Alumnos();
-                Console.WriteLine("Ingrese el nombre del alumno:");
-                alumno.Nombre = Console.ReadLine();
+                Console.WriteLine("Ingrese su especialidad:");
+                especialidadInput = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(especialidadInput))
+                {
+                    Console.WriteLine("La especialidad no puede estar vacía. Intente de nuevo.");
+                }
+            } while (string.IsNullOrWhiteSpace(especialidadInput));
+            doctor.Especialidad = especialidadInput;
 
-                if (string.IsNullOrWhiteSpace(alumno.Nombre))
-                    break; 
+            doctor.pacientes = new List<Paciente>();
 
-                Console.WriteLine("Ingrese el apellido del alumno:");
-                alumno.Apellido = Console.ReadLine();
-                Console.WriteLine("Ingrese el año del alumno:");
-                alumno.Año = Console.ReadLine();
+            // Carga de pacientes
+            while (true)
+            {
+                Paciente paciente = new Paciente();
 
-                curso.AgregarAlumnos(alumno);
+                Console.WriteLine("Ingrese el nombre del paciente:");
+                paciente.Nombre = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(paciente.Nombre))
+                    break;
 
-            } while (true);
+                int edad;
+                while (true)
+                {
+                    Console.WriteLine("Ingrese su edad:");
+                    string edadInput = Console.ReadLine();
+                    if (!int.TryParse(edadInput, out edad) || edad <= 0)
+                    {
+                        Console.WriteLine("La edad debe ser un número válido mayor a 0. Intente de nuevo.");
+                    }
+                    else break;
+                }
+                paciente.Edad = edad;
 
+                string diagnosticoInput;
+                do
+                {
+                    Console.WriteLine("Ingrese su diagnóstico:");
+                    diagnosticoInput = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(diagnosticoInput))
+                    {
+                        Console.WriteLine("El diagnóstico no puede estar vacío. Intente de nuevo.");
+                    }
+                } while (string.IsNullOrWhiteSpace(diagnosticoInput));
+                paciente.Diagnostico = diagnosticoInput;
 
-            escuela.Cursos.Add(curso);
+                doctor.asignarpaciente(paciente);
+            }
 
-        } while (true);
-
-
-        escuelass.Add(escuela);
-
-            } while (true) ;
+            hospital.Doc.Add(doctor);
         }
 
+        hospitales.Add(hospital);
+
+    } while (true);
+}
 
 void mostrar()
 {
-	foreach (var escuelitas in escuelass)
-	{
 
-        Console.WriteLine($"Escuela: {escuelitas.Nombre} -Ciudad: {escuelitas.Ciudad}");
-        foreach (var cursos in escuelitas.Cursos)
+    foreach (var hospitalitos in hospitales)
+    {
+        Console.WriteLine($"Hospital: {hospitalitos.Nombre} -Ciudad: {hospitalitos.Ciudad}");
+        foreach (var doctor in hospitalitos.Doc)
         {
-        Console.WriteLine($"  Curso: {cursos.Nombre}");
-            Console.WriteLine($"  Profesor: {cursos.profesor.Nombre} {cursos.profesor.Apellido} - Sueldo: {cursos.profesor.Sueldo} - Titulo: {cursos.profesor.Titulo}");
-            foreach (var alumno in cursos.Alumnoss)
+            Console.WriteLine($"Doctor: {doctor.Nombre} -Ciudad: {doctor.Especialidad}");
+            foreach (var pacientes in doctor.pacientes)
             {
-                Console.WriteLine($"      Alumno: {alumno.Nombre} -Apellido {alumno.Apellido} - Año: {alumno.Año}");
+                Console.WriteLine($"Paciente: {pacientes.Nombre} -Ciudad: {pacientes.Edad} -Diagnostico: {pacientes.Diagnostico}");
             }
         }
     }
@@ -97,10 +118,9 @@ void mostrar()
 
 }
 
-
-CargarEscuela();
-Console.WriteLine("Presiona para visualizar el reporte.");
+CargarHospital();
+Console.WriteLine("Presione una tecla para continuar y visualizar los datos");
 Console.ReadKey();
-Console.WriteLine("____________________________");
+Console.WriteLine("------------------------------------------------------------------------------");
 mostrar();
 Console.ReadKey();
