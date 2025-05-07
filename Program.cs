@@ -1,7 +1,5 @@
 ﻿using Trabajo_escuela_practica;
 List<Hospital> hospitales = new List<Hospital>();    
-List<Doctor> doctores = new List<Doctor>();
-
 void CargarHospital()
 {
     do
@@ -12,20 +10,22 @@ void CargarHospital()
         Console.WriteLine("Ingrese el nombre del hospital:");
         hospital.Nombre = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(hospital.Nombre))
+        {
+            Console.WriteLine("Saliendo de la carga de hospitales...");
             break;
-
+        }
         // Ingreso de ciudad con validación
-        string ciudadInput;
+        string CiudadValidar;
         do
         {
             Console.WriteLine("Ingrese la ciudad:");
-            ciudadInput = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(ciudadInput))
+            CiudadValidar = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(CiudadValidar))
             {
                 Console.WriteLine("La ciudad no puede estar vacía. Intente de nuevo.");
             }
-        } while (string.IsNullOrWhiteSpace(ciudadInput));
-        hospital.Ciudad = ciudadInput;
+        } while (string.IsNullOrWhiteSpace(CiudadValidar));
+        hospital.Ciudad = CiudadValidar;
 
         hospital.Doc = new List<Doctor>();
 
@@ -37,19 +37,21 @@ void CargarHospital()
             Console.WriteLine("Ingrese el nombre del doctor:");
             doctor.Nombre = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(doctor.Nombre))
+            {
+                Console.WriteLine("Saliendo de la carga de doctores...");
                 break;
-
-            string especialidadInput;
+            }
+            string especialidadvalidar;
             do
             {
                 Console.WriteLine("Ingrese su especialidad:");
-                especialidadInput = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(especialidadInput))
+                especialidadvalidar = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(especialidadvalidar))
                 {
                     Console.WriteLine("La especialidad no puede estar vacía. Intente de nuevo.");
                 }
-            } while (string.IsNullOrWhiteSpace(especialidadInput));
-            doctor.Especialidad = especialidadInput;
+            } while (string.IsNullOrWhiteSpace(especialidadvalidar));
+            doctor.Especialidad = especialidadvalidar;
 
             doctor.pacientes = new List<Paciente>();
 
@@ -61,8 +63,10 @@ void CargarHospital()
                 Console.WriteLine("Ingrese el nombre del paciente:");
                 paciente.Nombre = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(paciente.Nombre))
+                {
+                    Console.WriteLine("Saliendo de la carga de pacientes...");
                     break;
-
+                }
                 int edad;
                 while (true)
                 {
@@ -90,8 +94,9 @@ void CargarHospital()
 
                 doctor.asignarpaciente(paciente);
             }
-
             hospital.Doc.Add(doctor);
+
+
         }
 
         hospitales.Add(hospital);
@@ -107,10 +112,10 @@ void mostrar()
         Console.WriteLine($"Hospital: {hospitalitos.Nombre} -Ciudad: {hospitalitos.Ciudad}");
         foreach (var doctor in hospitalitos.Doc)
         {
-            Console.WriteLine($"Doctor: {doctor.Nombre} -Ciudad: {doctor.Especialidad}");
+            Console.WriteLine($"Doctor: {doctor.Nombre} -Especialidad: {doctor.Especialidad}");
             foreach (var pacientes in doctor.pacientes)
             {
-                Console.WriteLine($"Paciente: {pacientes.Nombre} -Ciudad: {pacientes.Edad} -Diagnostico: {pacientes.Diagnostico}");
+                Console.WriteLine($"Paciente: {pacientes.Nombre} -Edad: {pacientes.Edad} -Diagnostico: {pacientes.Diagnostico}");
             }
         }
     }
